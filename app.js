@@ -185,6 +185,7 @@ function updateTasks() {
         }
         
         // If same day, sort by reminder time
+        if (!a.reminder && !b.reminder) return 0;
         if (!a.reminder) return 1;
         if (!b.reminder) return -1;
         
@@ -774,6 +775,19 @@ document.getElementById('resetButton').addEventListener('click', () => {
     }
 });
 
+// Function to start auto-refresh for tasks
+function startTaskAutoRefresh() {
+    // Initial update
+    updateTasks();
+    updateTodayTasks();
+    
+    // Set up interval to refresh every second
+    setInterval(() => {
+        updateTasks();
+        updateTodayTasks();
+    }, 1000);
+}
+
 // Function to check and schedule next day refresh
 function scheduleNextDayRefresh() {
     const now = new Date();
@@ -803,6 +817,7 @@ function scheduleNextDayRefresh() {
 document.addEventListener('DOMContentLoaded', () => {
     loadSavedData();
     updateUI();
+    startTaskAutoRefresh();
     scheduleNextDayRefresh();
     
     // Update trade items every minute to refresh availability times
