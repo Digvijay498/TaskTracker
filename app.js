@@ -145,7 +145,12 @@ function updateTasks() {
     const tasksList = document.getElementById('tasksList');
     tasksList.innerHTML = '';
     
-    state.tasks.forEach((task, index) => {
+    // Separate tasks into available and completed
+    const availableTasks = state.tasks.filter(task => isTaskAvailable(task));
+    const completedTasks = state.tasks.filter(task => !isTaskAvailable(task));
+    
+    // Display available tasks first, then completed tasks
+    [...availableTasks, ...completedTasks].forEach((task, index) => {
         const available = isTaskAvailable(task);
         const nextAvailable = !available ? getNextTaskAvailableTime(task) : null;
         
